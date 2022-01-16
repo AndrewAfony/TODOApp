@@ -2,7 +2,7 @@ package com.myapp.todoapp.presentation.todo_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.myapp.todoapp.data.local.Todo
+import com.myapp.todoapp.domain.model.Todo
 import com.myapp.todoapp.domain.repository.TodoRepository
 import com.myapp.todoapp.uitl.Routes
 import com.myapp.todoapp.uitl.UiEvent
@@ -50,7 +50,7 @@ class TodoListViewModel @Inject constructor(
                 viewModelScope.launch {
                     repository.insertTodo(
                         event.todo.copy(
-                            isDone = event.todo.isDone
+                            isDone = event.isDone
                         )
                     )
                 }

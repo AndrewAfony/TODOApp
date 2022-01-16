@@ -1,6 +1,7 @@
 package com.myapp.todoapp.data.local
 
 import androidx.room.*
+import com.myapp.todoapp.domain.model.Todo
 import kotlinx.coroutines.flow.Flow
 
 @Dao

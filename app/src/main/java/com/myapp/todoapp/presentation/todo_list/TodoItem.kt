@@ -1,20 +1,18 @@
 package com.myapp.todoapp.presentation.todo_list
 
-import android.widget.CheckBox
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.myapp.todoapp.data.local.Todo
+import com.myapp.todoapp.domain.model.Todo
 
 @Composable
 fun TodoItem(
@@ -23,47 +21,62 @@ fun TodoItem(
     modifier: Modifier = Modifier
 ) {
 
-    Row(
+    var paddingOfText by remember { mutableStateOf(PaddingValues())}
+
+    if (todo.description != "" && todo.description != null)
+        paddingOfText = PaddingValues(vertical = 8.dp)
+
+    Card(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        shape = RoundedCornerShape(10.dp),
     ){
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+        Row(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Checkbox(
+                checked = todo.isDone,
+                onCheckedChange = { isChecked ->
+                    onEvent(TodoListEvent.OnDoneChange(todo, isChecked))
+                }
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(paddingOfText),
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = todo.title,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                IconButton(onClick = {
-                    onEvent(TodoListEvent.OnDeleteTodoClick(todo))
-                }) {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = "Delete Todo"
+                if (todo.description != "" && todo.description != null) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = todo.description,
+                        fontWeight = FontWeight.Light
                     )
                 }
             }
-            todo.description?.let {
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = it
+            IconButton(onClick = {
+                onEvent(TodoListEvent.OnDeleteTodoClick(todo))
+            }) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = "Delete Todo"
                 )
             }
-
-
         }
-        Checkbox(
-            checked = todo.isDone,
-            onCheckedChange = { isChecked ->
-                onEvent(TodoListEvent.OnDoneChange(todo, isChecked))
-            }
-        )
     }
 
+
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun preview() {
+    TodoItem(todo = Todo(title = "One", "Description", false), onEvent = {})
 }

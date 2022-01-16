@@ -1,10 +1,9 @@
 package com.myapp.todoapp.data.repository
 
-import com.myapp.todoapp.data.local.Todo
+import com.myapp.todoapp.domain.model.Todo
 import com.myapp.todoapp.data.local.TodoDao
 import com.myapp.todoapp.domain.repository.TodoRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 class TodoRepositoryImpl(
     private val dao: TodoDao

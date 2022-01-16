@@ -1,6 +1,6 @@
 package com.myapp.todoapp.domain.repository
 
-import com.myapp.todoapp.data.local.Todo
+import com.myapp.todoapp.domain.model.Todo
 import kotlinx.coroutines.flow.Flow
 
 interface TodoRepository {
