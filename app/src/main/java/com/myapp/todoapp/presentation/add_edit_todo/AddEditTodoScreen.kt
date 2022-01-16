@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,16 +42,20 @@ fun AddEditTodoScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.onEvent(AddEditTodoEvent.OnSaveTodoClick) }) {
+            FloatingActionButton(
+                onClick = { viewModel.onEvent(AddEditTodoEvent.OnSaveTodoClick) },
+                backgroundColor = Color.White
+            ) {
                 Icon(Icons.Default.Check, contentDescription = null)
             }
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
             TextField(
                 value = viewModel.title,

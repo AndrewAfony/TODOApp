@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.myapp.todoapp.uitl.UiEvent
@@ -47,7 +48,10 @@ fun TodoListScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.onEvent(TodoListEvent.OnAddTodoClick) }) {
+            FloatingActionButton(
+                onClick = { viewModel.onEvent(TodoListEvent.OnAddTodoClick) },
+                backgroundColor = Color.White
+            ) {
                 Icon(Icons.Default.Add, contentDescription = null)
             }
         }

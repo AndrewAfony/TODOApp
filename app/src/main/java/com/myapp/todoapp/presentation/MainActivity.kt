@@ -47,3 +47,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// TODO: 16.01.2022 Добавить TextField для добавления TODO прямо на TodoListScreen внизу
