@@ -10,8 +10,7 @@ import com.myapp.todoapp.domain.model.Todo
 import com.myapp.todoapp.domain.repository.TodoRepository
 import com.myapp.todoapp.uitl.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,9 +29,9 @@ class AddEditTodoViewModel @Inject constructor(
     var description by mutableStateOf("")
     private set
 
-    private val _uiEvent = Channel<UiEvent>()
-    var uiEvent = _uiEvent.receiveAsFlow()
-
+    var eventFlow = MutableSharedFlow<UiEvent>()
+        private set 
+    
     init {
         val todoId = savedStateHandle.get<Int>("todoId")!!
         if(todoId != -1 ) {
@@ -57,7 +56,7 @@ class AddEditTodoViewModel @Inject constructor(
             is AddEditTodoEvent.OnSaveTodoClick -> {
                 viewModelScope.launch {
                     if(title.isBlank()) {
-                        sendUiEvent(UiEvent.ShowSnackbar(
+                        eventFlow.emit(UiEvent.ShowSnackbar(
                             message = "The title can't be empty"
                         ))
                         return@launch
@@ -70,15 +69,9 @@ class AddEditTodoViewModel @Inject constructor(
                             id = todo?.id
                         )
                     )
-                    sendUiEvent(UiEvent.PopBackStack)
+                    eventFlow.emit(UiEvent.PopBackStack)
                 }
             }
-        }
-    }
-
-    private fun sendUiEvent(event: UiEvent) {
-        viewModelScope.launch {
-            _uiEvent.send(event)
         }
     }
 }
